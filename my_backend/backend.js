@@ -1,9 +1,10 @@
 const express = require('express');
-
+const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.use(express.json()); 
+app.use(cors());
 
 let users = [];
 let questions = [];
@@ -14,9 +15,8 @@ app.get('/questions', (req, res) => {
 });
 
 app.post('/question', (req, res) => {
-    console.log("hello");
     const newQuestion = {
-        id: questions.length + 1, // Simple ID assignment
+        id: questions.length + 1,
         ask: req.body.ask,
         choices: req.body.choices,
         answer: req.body.answer,
