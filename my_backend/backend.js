@@ -10,6 +10,59 @@ let users = [];
 let questions = [];
 let seeds = [];
 
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+app.post('/user', (req, res) => {
+    const newUser = {
+        id: users.length + 1,
+        username: req.body.username,
+        password: req.body.password,
+    };
+    x = 0;
+    for (var i in users){
+        if (users[i].username == newUser.username){
+            res.status(201).json("this username already used!");
+            x = 1;
+            break;
+        }
+    }
+    if (x == 0){
+        if (newUser.username == "" || newUser.password == ""){
+            res.status(201).json("username or password is empty");
+        }
+        else{
+            users.push(newUser);
+            res.status(201).json("new user created");
+        }
+    }
+});
+
+
+app.post('/addUser', (req, res) => {
+    const newUser = {
+        id: users.length + 1,
+        username: req.body.username,
+        password: req.body.password,
+    };
+    x = 0;
+    for (var i in users){
+        if (users[i].username == newUser.username){
+            x = 1;
+            if(users[i].password == newUser.password){
+                res.status(201).json("you are log in");
+            } else{
+                res.status(201).json("password is wrong!");
+            }
+            break;
+        }
+        if (x == 0){
+            res.status(201).json("username not found!");
+        }
+    }
+});
+
 app.get('/questions', (req, res) => {
     res.json(questions);
 });
