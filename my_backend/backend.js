@@ -48,9 +48,9 @@ function getNotAnsweredQuestions(username) {
 
 function updateTable(username, correctAnswer) {
     for (let u in users) {
-        if (users[u].name == username) {
-            users[u].totalAnswer ++;
-            if (correctAnswer) users[u].correctAnswer ++;
+        if (users[u].username == username) {
+            users[u].totalAnswer += 1;
+            if (correctAnswer) users[u].correctAnswer += 1;
             users[u].score = users[u].correctAnswer * 5 - users[u].totalAnswer;
         }
     }
@@ -62,6 +62,7 @@ function addSeed(seedName) {
         name: seedName
     };
     seeds.push(newSeed);
+    return newSeed;
 }
 
 app.get('/users', (req, res) => {
@@ -91,6 +92,7 @@ app.post('/addUser', (req, res) => {
         }
         else{
             users.push(newUser);
+            answered_questions[newUser.username] = []
             res.status(201).json("new user created");
         }
     }
@@ -157,7 +159,7 @@ app.post('/answer', (req, res) => {
         correctness = (a == q.answer);
         updateTable(currentUser, correctness);
         answered_questions[currentUser].push(req.body.questionId);
-        res.status(201).json(newQuestion);
+        res.status(201);
     }
 });
 
@@ -176,7 +178,7 @@ app.get('/seeds', (req, res) => {
 });
 
 app.post('/seed', (req, res) => {
-    addSeed(req.body.name);
+    let newSeed = addSeed(req.body.name);
     res.status(201).json(newSeed);
 });
 
